@@ -1,0 +1,186 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+#define MAX_BARANG 5
+struct Barang {
+    int nomor;
+    char nama[50];
+    int harga;
+    int jumlah;
+};
+
+void clearScreen() {
+    system("cls");
+}
+
+void tampilkanMenu() {
+	clearScreen();
+    printf("Selamat datang di Toko SKENSA.\n");
+    printf("Silahkan pilih barang yang anda inginkan :\n");
+    printf("=========================================\n");
+    printf("|No.| Barang          | Harga     |\n");
+    printf("-----------------------------------------\n");
+    printf("| 1 | Buku Tulis      | Rp.5000   |\n");
+    printf("| 2 | Pensil          | Rp.2000   |\n");
+    printf("| 3 | Penghapus       | Rp.1000   |\n");
+    printf("| 4 | Penggaris       | Rp.1000   |\n");
+    printf("| 5 | Bujur Sangkar   | Rp.500    |\n");
+    printf("=========================================\n");
+    printf("\n");
+    printf("11. Input Barang\n");
+    printf("99. Struk Pembayaran\n");
+    printf("55. Reset Pilihan\n");
+    printf("00. Keluar\n");
+    printf("\n");
+    printf("-----------------------------------------\n");
+}
+
+int main() {
+    int pilihan, jumlah = 0 , total = 0;
+    char lagi;
+    int totalBayar = 0, totalDiskon = 0, kembalian;
+    const int maxBarang = 10; // Maksimum 10 barang
+    struct Barang keranjang[maxBarang];
+    char namaBarang[maxBarang][50];
+    int hargaBarang[maxBarang];
+    int jumlahBarang[maxBarang];
+    int nomorBarang = 0;
+    int totalBarang = 0;
+    int i; // Variabel i perlu dideklarasikan di luar loop for
+    int uangBayar;
+    clearScreen();
+    tampilkanMenu();
+
+    while (1) {
+    	
+        printf("Inputkan pilihan yang Anda inginkan: ");
+        scanf("%d", &pilihan);
+
+        switch (pilihan) {
+            case 11:
+			
+                lagi = 'Y';
+
+                while (lagi == 'Y' || lagi == 'y') {
+                    printf("Pilih barang: ");
+scanf("%d", &keranjang[totalBarang].nomor);
+fflush(stdin);
+
+if (keranjang[totalBarang].nomor < 1 || keranjang[totalBarang].nomor > 5) {
+    printf("Nomor barang tidak valid. Silakan pilih nomor barang antara 1 dan 5.\n");
+    continue;
+}
+
+printf("Masukkan jumlah barang: ");
+scanf("%d", &keranjang[totalBarang].jumlah);
+fflush(stdin);
+
+switch (keranjang[totalBarang].nomor) {
+    case 1:
+        strcpy(keranjang[totalBarang].nama, "Buku Tulis");
+        keranjang[totalBarang].harga = 5000;
+        break;
+    case 2:
+        strcpy(keranjang[totalBarang].nama, "Pensil");
+        keranjang[totalBarang].harga = 2000;
+        break;
+    case 3:
+        strcpy(keranjang[totalBarang].nama, "Penghapus");
+        keranjang[totalBarang].harga = 1000;
+        break;
+    case 4:
+        strcpy(keranjang[totalBarang].nama, "Penggaris");
+        keranjang[totalBarang].harga = 1000;
+        break;
+    case 5:
+        strcpy(keranjang[totalBarang].nama, "Bujur Sangkar");
+        keranjang[totalBarang].harga = 500;
+        break;
+}
+
+totalBarang++; // Menambah jumlah barang dalam keranjang
+
+                    jumlahBarang[nomorBarang] += jumlah; // Mengakumulasi jumlah barang
+                    total += hargaBarang[nomorBarang] * jumlah;
+
+                    printf("Ingin menambah barang lagi? (Y/N): ");
+                    scanf(" %c", &lagi);
+                    fflush(stdin);
+                }
+
+                if (total >= 3) { // Ubah kondisi diskon menjadi total pembelian
+                    totalDiskon = total * 10 / 100;
+                } else if (total >= 5) { // Ubah kondisi diskon menjadi total pembelian
+                    totalDiskon = total * 15 / 100;
+                } else {
+                    totalDiskon = 0;
+                }
+                break;
+
+            case 99:
+                
+
+                clearScreen();
+			clearScreen();
+total = 0;
+totalDiskon = 0;
+for (i = 0; i < totalBarang; i++) {
+    total += keranjang[i].harga * keranjang[i].jumlah;
+}
+
+if (total >= 30000) { // Ubah kondisi diskon menjadi total pembelian
+    totalDiskon = total * 10 / 100;
+} else if (total >= 50000) { // Ubah kondisi diskon menjadi total pembelian
+    totalDiskon = total * 15 / 100;
+}
+
+totalBayar = total - totalDiskon;
+
+printf("Rekap Pesanan Barang\n");
+printf("==============================================================================\n");
+printf("| No | Jumlah | Nama Barang       | Harga     | Total Harga |\n");
+printf("==============================================================================\n");
+
+for (i = 0; i < totalBarang; i++) {
+    printf("| %d  |   %d    | %-16s | Rp.%-7d | Rp.%-8d |\n", keranjang[i].nomor, keranjang[i].jumlah, keranjang[i].nama, keranjang[i].harga, keranjang[i].harga * keranjang[i].jumlah);
+}
+printf("==============================================================================\n");
+printf("Total Harga  = Rp.%d\n", total);
+printf("Total Diskon = Rp.%d\n", totalDiskon);
+printf("Total Bayar  = Rp.%d\n", totalBayar);
+
+                printf("==============================================================================\n");
+                printf("Masukkan jumlah uang : Rp.");
+                scanf("%d", &uangBayar);
+
+                if (uangBayar < totalBayar) {
+                    printf("Uang yang Anda masukkan kurang. Silakan masukkan jumlah uang yang mencukupi.\n");
+                    getchar();
+                    getchar();
+                    continue;
+                }
+
+                kembalian = uangBayar - totalBayar;
+                printf("Kembalian Anda = Rp.%d\n", kembalian);
+                printf("Terimakasih telah berbelanja di toko kami\n");
+                break;
+            case 55:
+                total = 0;
+                totalDiskon = 0;
+                totalBayar = 0;
+                nomorBarang = 0;
+                printf("Pilihan telah di reset\n");
+                getchar();
+                getchar();
+                break;
+
+            case 00:
+                return 0;
+
+            default:
+                printf("Pilihan tidak valid.\n");
+                return 1;
+        }
+    }
+}
